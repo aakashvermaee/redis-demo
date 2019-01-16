@@ -1,0 +1,12 @@
+<h1>
+  Search Users
+</h1>
+
+{{#if error}} <span>{{error}}</span> {{/if}}
+
+<form class="form-inline" method="POST" action="/api/user/search">
+  <div class="form-group">
+    <input name="id" placeholder="Search User By Id" class="form-control" autocomplete="off">
+  </div>
+  <input type="submit" value="Search" class="btn btn-primary">
+</form>
