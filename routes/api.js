@@ -17,7 +17,7 @@ const apiRoutes = function(router, redisClient) {
         });
       } else {
         obj.id = id;
-        res.render('details', {
+        res.render("details", {
           user: obj
         });
       }
@@ -26,7 +26,7 @@ const apiRoutes = function(router, redisClient) {
 
   // GET: Add User API
   router.get("/user/adduser", (req, res) => {
-    res.render('adduser');
+    res.render("adduser");
   });
 
   // POST: Add User API
@@ -35,15 +35,27 @@ const apiRoutes = function(router, redisClient) {
     console.log(id, firstName, lastName, email, phone);
 
     redisClient.hmset(id, [
-      'first_name', firstName,
-      'last_name', lastName,
-      'email', email,
-      'phone', phone
+      "first_name", firstName,
+      "last_name", lastName,
+      "email", email,
+      "phone", phone
     ], (err, reply) => {
       if (err) throw err;
       console.log(reply);
-      res.redirect('/');
+      res.redirect("/");
     })
+  });
+
+
+  // POST: Delete User API
+  router.post("/user/delete/:id", (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+
+    redisClient.del(id, (err, reply) => {
+      if (err) throw err;
+      res.redirect("/");
+    });
   });
 
   return router;
