@@ -24,9 +24,26 @@ const apiRoutes = function(router, redisClient) {
     });
   });
 
-  // POST: add user api
-  router.post("/user/add", (req, res) => {
-    res.send("Add User");
+  // GET: Add User API
+  router.get("/user/adduser", (req, res) => {
+    res.render('adduser');
+  });
+
+  // POST: Add User API
+  router.post("/user/adduser", (req, res) => {
+    const { id, firstName, lastName, email, phone } = req.body;
+    console.log(id, firstName, lastName, email, phone);
+
+    redisClient.hmset(id, [
+      'first_name', firstName,
+      'last_name', lastName,
+      'email', email,
+      'phone', phone
+    ], (err, reply) => {
+      if (err) throw err;
+      console.log(reply);
+      res.redirect('/');
+    })
   });
 
   return router;
