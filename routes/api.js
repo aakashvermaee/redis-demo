@@ -1,9 +1,13 @@
-const { Router } = require("express");
+const {
+  Router
+} = require("express");
 
 // controllers
-const { user } = require("../controllers");
+const {
+  user
+} = require("../controllers");
 
-const apiRoutes = function(router, redisClient) {
+const apiRoutes = function (router, redisClient) {
   router = Router();
 
   // root

@@ -6,7 +6,10 @@ const path = require("path");
 // dependencies
 const express = require("express");
 const exphbs = require("express-handlebars");
-const { json, urlencoded } = require("body-parser");
+const {
+  json,
+  urlencoded
+} = require("body-parser");
 const methodOverride = require("method-override");
 const redis = require("redis");
 
@@ -24,13 +27,17 @@ app.get("/", (req, res, next) => {
 
 // body-parser
 app.use(json());
-app.use(urlencoded({ extended: false }));
+app.use(urlencoded({
+  extended: false
+}));
 
 // methodOverride
 app.use(methodOverride("_method"));
 
 // View Engine
-app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.engine("handlebars", exphbs({
+  defaultLayout: "main"
+}));
 app.set("view engine", "handlebars");
 
 // router
