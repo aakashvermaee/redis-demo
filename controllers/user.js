@@ -56,9 +56,85 @@ const deleteUser = (req, res, redisClient) => {
   });
 }
 
+// GET: Signup
+const signUpGet = (req, res) => {
+  res.render("signup");
+}
+
+// POST: Signup
+const signUp = (req, res, redisClient) => {
+  const {
+    firstName,
+    lastName,
+    email,
+    phone,
+    password
+  } = req.body;
+
+  const id = email;
+
+  redisClient.hmset(id, [
+    "first_name", firstName,
+    "last_name", lastName,
+    "email", email,
+    "phone", phone,
+    "password", password
+  ], (err, reply) => {
+    if (err) throw err;
+
+    redisClient.hgetall(id, (err, obj) => {
+      res.cookie("id", obj.email);
+      res.redirect("/api/user/login");
+    });
+  });
+}
+
+// GET: User Login
+const loginGet = (req, res, redisClient) => {
+  console.log(req.cookies);
+  const {
+    id
+  } = req.cookies;
+
+  redisClient.hgetall(id, (err, obj) => {
+    if (!obj) {
+      res.render("login");
+    } else {
+      obj.id = id;
+      res.render("login", {
+        user: obj
+      });
+    }
+  });
+}
+
+// POST: User Login
+const login = (req, res, redisClient) => {
+  const {
+    email
+  } = req.body;
+
+  redisClient.hgetall(email, (err, obj) => {
+    if (!obj) {
+      res.render("Signup");
+    } else {
+      obj.id = email;
+      obj.session = true;
+      res.cookie("id", obj.id);
+      res.render("login", {
+        user: obj
+      });
+    }
+  });
+}
+
 module.exports = {
   addUser,
   addUserGet,
   deleteUser,
   searchUser,
+  login,
+  loginGet,
+  signUp,
+  signUpGet
 }

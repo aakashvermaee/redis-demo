@@ -12,6 +12,7 @@ const {
 } = require("body-parser");
 const methodOverride = require("method-override");
 const redis = require("redis");
+const cookieParser = require('cookie-parser');
 
 // app
 const app = express();
@@ -21,15 +22,14 @@ const redisClient = redis.createClient();
 redisClient.on("connect", () => console.log("Connected to Redis..."));
 
 // app-level middlewares
-app.get("/", (req, res, next) => {
-  res.render("searchusers");
-});
-
 // body-parser
 app.use(json());
 app.use(urlencoded({
   extended: false
 }));
+
+// cookie-parser
+app.use(cookieParser());
 
 // methodOverride
 app.use(methodOverride("_method"));
@@ -39,6 +39,14 @@ app.engine("handlebars", exphbs({
   defaultLayout: "main"
 }));
 app.set("view engine", "handlebars");
+
+// Root
+app.get("/", (req, res, next) => {
+  const { id } = req.cookies;
+  id
+  ? res.redirect("/api/user/login")
+  : res.render("searchusers");
+});
 
 // router
 const routes = require("./routes/");
