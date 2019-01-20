@@ -83,7 +83,6 @@ const signUp = (req, res, redisClient) => {
     if (err) throw err;
 
     redisClient.hgetall(id, (err, obj) => {
-      res.cookie("id", obj.email);
       res.redirect("/api/user/login");
     });
   });
@@ -91,11 +90,6 @@ const signUp = (req, res, redisClient) => {
 
 // GET: User Login
 const loginGet = (req, res, redisClient) => {
-  console.log(req.cookies);
-  const {
-    id
-  } = req.cookies;
-
   redisClient.hgetall(id, (err, obj) => {
     if (!obj) {
       res.render("login");
@@ -110,9 +104,6 @@ const loginGet = (req, res, redisClient) => {
 
 // GET: Signout
 const signOutGet = (req, res, redisClient) => {
-  const {
-    id
-  } = req.cookies;
   res.clearCookie("id");
   res.redirect("/");
 }

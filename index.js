@@ -12,7 +12,7 @@ const {
 } = require("body-parser");
 const methodOverride = require("method-override");
 const redis = require("redis");
-const cookieParser = require('cookie-parser');
+const session = require("express-session");
 
 // app
 const app = express();
@@ -27,6 +27,17 @@ app.use(json());
 app.use(urlencoded({
   extended: false
 }));
+
+// session
+app.use(session({
+  secret: "sescret",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    expires: (new Date().getTime() * 24 * 60 * 60 * 1000).toString(),
+    secure: true
+  }
+}))
 
 // methodOverride
 app.use(methodOverride("_method"));
