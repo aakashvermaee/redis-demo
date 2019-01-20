@@ -108,6 +108,15 @@ const loginGet = (req, res, redisClient) => {
   });
 }
 
+// GET: Signout
+const signOutGet = (req, res, redisClient) => {
+  const {
+    id
+  } = req.cookies;
+  res.clearCookie("id");
+  res.redirect("/");
+}
+
 // POST: User Login
 const login = (req, res, redisClient) => {
   const {
@@ -121,7 +130,7 @@ const login = (req, res, redisClient) => {
       obj.id = email;
       obj.session = true;
       res.cookie("id", obj.id, {
-        "maxAge": (new Date().getTime()*24*60*60*1000).toString()
+        "maxAge": (new Date().getTime() * 24 * 60 * 60 * 1000).toString()
       });
       res.render("login", {
         user: obj
@@ -138,5 +147,6 @@ module.exports = {
   login,
   loginGet,
   signUp,
-  signUpGet
+  signUpGet,
+  signOutGet
 }

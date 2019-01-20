@@ -28,9 +28,6 @@ app.use(urlencoded({
   extended: false
 }));
 
-// cookie-parser
-app.use(cookieParser());
-
 // methodOverride
 app.use(methodOverride("_method"));
 
@@ -42,10 +39,7 @@ app.set("view engine", "handlebars");
 
 // Root
 app.get("/", (req, res, next) => {
-  const { id } = req.cookies;
-  id
-  ? res.redirect("/api/user/login")
-  : res.render("searchusers");
+  res.render("home");
 });
 
 // router

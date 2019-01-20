@@ -54,6 +54,11 @@ const apiRoutes = function (router, redisClient) {
     user.login(req, res, redisClient);
   });
 
+  // GET: Logout/Signout
+  router.get("/user/signout", (req, res) => {
+    user.signOutGet(req, res, redisClient);
+  });
+
   return router;
 }
 
