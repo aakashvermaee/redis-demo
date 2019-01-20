@@ -120,7 +120,9 @@ const login = (req, res, redisClient) => {
     } else {
       obj.id = email;
       obj.session = true;
-      res.cookie("id", obj.id);
+      res.cookie("id", obj.id, {
+        "maxAge": (new Date().getTime()*24*60*60*1000).toString()
+      });
       res.render("login", {
         user: obj
       });
